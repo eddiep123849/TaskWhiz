@@ -1,6 +1,7 @@
 package com.internet.taskwhiz
 
 import android.os.Bundle
+import android.view.animation.AnimationUtils
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -46,6 +47,12 @@ class MainActivity : AppCompatActivity() {
             // next thing to handle it, which is usually the normal onClickListener
             // you set up.
             true
+        }
+
+        binding.androidPicture.setOnClickListener{
+            val rotate = AnimationUtils.loadAnimation(this,
+                R.anim.tumble)
+            binding.androidPicture.startAnimation(rotate)
         }
 
 
