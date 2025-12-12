@@ -9,15 +9,15 @@
 
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:layout_marginTop="200dp"
         android:layout_marginBottom="504dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.075"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintStart_toEndOf="parent">
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -73,8 +73,32 @@
                 android:layout_marginBottom="25dp"
                 android:text="@string/you_had_to_scroll_down_to_see_this" />
 
+            <EditText
+                android:id="@+id/enterText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="25dp"
+                android:hint="@string/enter_some_text"
+                android:inputType="text"
+                android:text="@string/type_something_here"
+                android:textColor="#FBFBFB" />
+
 
         </LinearLayout>
     </ScrollView>
+
+    <TextView
+        android:id="@+id/displaySavedText"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="@string/this_will_hold_the_saved_user_text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.50"
+        app:layout_constraintStart_toEndOf="@id/scrollView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.041"
+        tools:text="Sample text this isn't visible when the app is running" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

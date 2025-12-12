@@ -5,4 +5,7 @@
     <string name="more_widgets">More widgets!</string>
     <string name="the_typical_android_avatar_photo">The typical Android avatar photo</string>
     <string name="you_had_to_scroll_down_to_see_this">You had to scroll down to see this!</string>
+    <string name="enter_some_text">Enter some text!</string>
+    <string name="this_will_hold_the_saved_user_text">This will hold the saved user text</string>
+    <string name="type_something_here">Type something here!</string>
 </resources>
