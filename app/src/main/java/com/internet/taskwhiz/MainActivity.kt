@@ -29,6 +29,12 @@ class MainActivity : AppCompatActivity() {
 
         // Set up the listener for the button to know when it's clicked
         binding.button.setOnClickListener{
+            if (binding.button.text.equals("Restart!")){
+                // If the user pressed the restart button before, then we reset
+                // the count to be 0 so that the next time they short press the button,
+                // the count gets reset to "1" when the button text is updated.
+                count = 0
+            }
             binding.button.text = (++count).toString()
         }
 
@@ -41,6 +47,8 @@ class MainActivity : AppCompatActivity() {
             // you set up.
             true
         }
+
+
     }
 
 

@@ -2,4 +2,7 @@
     <string name="app_name">TaskWhiz</string>
     <string name="click_me">Click Me!</string>
     <string name="is_this_working">Is this working?</string>
+    <string name="more_widgets">More widgets!</string>
+    <string name="the_typical_android_avatar_photo">The typical Android avatar photo</string>
+    <string name="you_had_to_scroll_down_to_see_this">You had to scroll down to see this!</string>
 </resources>
