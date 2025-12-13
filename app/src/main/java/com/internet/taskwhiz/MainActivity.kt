@@ -65,7 +65,9 @@ class MainActivity : AppCompatActivity() {
         binding.enterText.setOnEditorActionListener{ textView: TextView?,
                                                       num: Int,
                                                       keyEvent: KeyEvent? ->
-
+            // Set this text view to have the text that the user put in
+            // the EditText.
+            binding.displaySavedText.text = binding.enterText.getText()
             true
         }
 
