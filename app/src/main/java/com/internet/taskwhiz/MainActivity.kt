@@ -5,15 +5,18 @@ import android.util.Log
 import android.view.KeyEvent
 import android.view.animation.AnimationUtils
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 // view binding import
 import com.internet.taskwhiz.databinding.ActivityMainBinding
+import java.io.File
 // file IO imports
 import java.io.FileReader
 import java.io.FileWriter
+import java.io.InputStream
 
 class MainActivity : AppCompatActivity() {
 
@@ -79,34 +82,54 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.viewSaveFile.setOnClickListener{
-            updateSaveFile()
+            viewSaveFile()
         }
-
     }
 
-    // This changes the textView to have the text currently stored in the save file.
+    // This changes the textView to show the text currently stored in the save file.
     private fun viewSaveFile(){
-        Log.i("functions", "We have begun viewSaveFile()")
-        val fileReader = FileReader("savedusertext.txt")
-        Log.i("functions", "fileReader is: $fileReader")
-        val fileContents: List<String> = fileReader.readLines()
-        var allLines = ""
+        Log.i("functions", "----------viewSavedFile() has begun----------")
+        val fileInputStream = this.openFileInput("savedusertext.txt")
+        Log.i("functions", "fileInputStream is: $fileInputStream")
 
-        for (string in fileContents)
-            allLines += string
+        var allLines: String = ""
+        var currFileByte = fileInputStream.read()
+
+        while(currFileByte != -1) {
+            allLines += currFileByte.toChar()
+            currFileByte = fileInputStream.read()
+        }
 
         binding.displaySavedText.text = allLines
 
-        fileReader.close()
+        Log.i("functions", "allLines is: $allLines")
+
+        Toast.makeText(
+            this,
+            "The textView now shows the saved text.",
+            Toast.LENGTH_SHORT
+        )
+            .show()
+
     }
 
-    // This changes the save file to have the text currently in the textView
+    // This changes the save file to store the text currently in the textView
     private fun updateSaveFile(){
-        Log.i("functions", "We have begun updateSaveFile()")
-        val fileWriter = FileWriter("savedusertext.txt")
-        Log.i("functions", "fileWriter is: $fileWriter")
-        val textViewContents: String = (binding.displaySavedText.text).toString()
-        fileWriter.write(textViewContents)
+        Log.i("functions", "----------updateDaveFile has begun----------")
+        val fileOutputStream = this.openFileOutput("savedusertext.txt", 0)
+        Log.i("functions", "fileOutputStream is: $fileOutputStream")
+
+        var textViewText = binding.displaySavedText.text
+
+        for (byte: Int in textViewText.chars())
+            fileOutputStream.write(byte)
+
+        Toast.makeText(
+            this,
+            "The text in the textView has been saved.",
+            Toast.LENGTH_SHORT
+        )
+            .show()
     }
 
 
