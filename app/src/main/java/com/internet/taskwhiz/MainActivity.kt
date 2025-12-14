@@ -17,6 +17,7 @@ import java.io.File
 import java.io.FileReader
 import java.io.FileWriter
 import java.io.InputStream
+import java.io.OutputStream
 
 class MainActivity : AppCompatActivity() {
 
@@ -110,6 +111,24 @@ class MainActivity : AppCompatActivity() {
             Toast.LENGTH_SHORT
         )
             .show()
+
+        // Below, I'm adding in some experimental changes.
+        try {
+            Log.i(
+                "functions", "Here it is: ${getResources().getResourceName(R.raw.saveitsample)}"
+            )
+
+            val inputStream: InputStream = getResources().openRawResource(R.raw.saveitsample)
+            var currByte = inputStream.read()
+            while(currByte != -1){
+                Log.i("functions", currByte.toChar().toString())
+                currByte = inputStream.read()
+            }
+
+
+        } catch(e: Exception){
+            Log.e("functions", "something went wrong: ${e.printStackTrace()}")
+        }
 
     }
 
