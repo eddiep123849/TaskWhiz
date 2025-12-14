@@ -8,4 +8,6 @@
     <string name="enter_some_text">Enter some text!</string>
     <string name="this_will_hold_the_saved_user_text">This will hold the saved user text</string>
     <string name="type_something_here">Type something here!</string>
+    <string name="click_to_save_displayed_text">Click to save displayed text</string>
+    <string name="click_to_view_saved_text">Click to view saved text</string>
 </resources>

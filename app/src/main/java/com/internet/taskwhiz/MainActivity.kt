@@ -11,6 +11,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 // view binding import
 import com.internet.taskwhiz.databinding.ActivityMainBinding
+// file IO imports
+import java.io.FileReader
+import java.io.FileWriter
 
 class MainActivity : AppCompatActivity() {
 
@@ -71,6 +74,39 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
+        binding.updateSaveFile.setOnClickListener{
+            updateSaveFile()
+        }
+
+        binding.viewSaveFile.setOnClickListener{
+            updateSaveFile()
+        }
+
+    }
+
+    // This changes the textView to have the text currently stored in the save file.
+    private fun viewSaveFile(){
+        Log.i("functions", "We have begun viewSaveFile()")
+        val fileReader = FileReader("savedusertext.txt")
+        Log.i("functions", "fileReader is: $fileReader")
+        val fileContents: List<String> = fileReader.readLines()
+        var allLines = ""
+
+        for (string in fileContents)
+            allLines += string
+
+        binding.displaySavedText.text = allLines
+
+        fileReader.close()
+    }
+
+    // This changes the save file to have the text currently in the textView
+    private fun updateSaveFile(){
+        Log.i("functions", "We have begun updateSaveFile()")
+        val fileWriter = FileWriter("savedusertext.txt")
+        Log.i("functions", "fileWriter is: $fileWriter")
+        val textViewContents: String = (binding.displaySavedText.text).toString()
+        fileWriter.write(textViewContents)
     }
 
 

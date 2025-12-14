@@ -101,4 +101,27 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <Button
+        android:id="@+id/updateSaveFile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="96dp"
+        android:text="@string/click_to_save_displayed_text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView"
+        app:layout_constraintVertical_bias="0.403" />
+
+    <Button
+        android:id="@+id/viewSaveFile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/click_to_view_saved_text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.562"
+        app:layout_constraintStart_toEndOf="@+id/updateSaveFile"
+        app:layout_constraintTop_toBottomOf="@+id/displaySavedText"
+        app:layout_constraintVertical_bias="0.403" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
