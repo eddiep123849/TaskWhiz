@@ -7,6 +7,7 @@ import android.view.animation.AnimationUtils
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.view.ViewCompat
@@ -53,10 +54,17 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = taskAdapter
 
+        binding.addTask.setOnClickListener{
+            val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+            builder.setTitle("Add Task")
+                .setPositiveButton("Add Task") { dialog, which ->
 
+                }
+                .setNegativeButton("Cancel") {dialog, which ->
 
+                }.create().show()
 
-
-
+        }
     }
+
 }
