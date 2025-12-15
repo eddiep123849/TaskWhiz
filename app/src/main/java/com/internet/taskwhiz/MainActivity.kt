@@ -13,6 +13,7 @@ import androidx.core.view.WindowInsetsCompat
 // view binding import
 import com.internet.taskwhiz.databinding.ActivityMainBinding
 import java.io.File
+import java.io.FileInputStream
 // file IO imports
 import java.io.FileReader
 import java.io.FileWriter
@@ -89,7 +90,20 @@ class MainActivity : AppCompatActivity() {
     // This changes the textView to show the text currently stored in the save file.
     private fun viewSaveFile(){
         Log.i("functions", "----------viewSavedFile() has begun----------")
-        val fileInputStream = this.openFileInput("savedusertext.txt")
+        // The below is my work around for the saveusertext.txt file
+        // being created bt the updateSaveFile() method. This'll ensure
+        // the file always exists. Is there a more elegant way to do this?
+        // Sure, but I don't know it.
+        var fileInputStream: FileInputStream
+        try {
+            // If the file exists, then we'll open it.
+            fileInputStream = this.openFileInput("savedusertext.txt")
+        } catch (e: Exception){
+            // If the file doesn't exist, then we'll make it, and then carry
+            // on with program execution.
+            makeSaveFile()
+            fileInputStream = this.openFileInput("savedusertext.txt")
+        }
         Log.i("functions", "fileInputStream is: $fileInputStream")
 
         var allLines: String = ""
@@ -115,7 +129,7 @@ class MainActivity : AppCompatActivity() {
 
     // This changes the save file to store the text currently in the textView
     private fun updateSaveFile(){
-        Log.i("functions", "----------updateDaveFile has begun----------")
+        Log.i("functions", "----------updateSaveFile has begun----------")
         val fileOutputStream = this.openFileOutput("savedusertext.txt", 0)
         Log.i("functions", "fileOutputStream is: $fileOutputStream")
 
@@ -132,5 +146,9 @@ class MainActivity : AppCompatActivity() {
             .show()
     }
 
-
+    // This function will make the save file if it doesn't exist and
+    // make it empty if it already does.
+    private fun makeSaveFile(){
+        this.openFileOutput("savedusertext.txt", 0)
+    }
 }
