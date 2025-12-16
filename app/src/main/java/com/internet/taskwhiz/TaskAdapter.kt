@@ -10,7 +10,7 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 
-class TaskAdapter(val listOfTasks: Array<Task>): RecyclerView.Adapter<TaskAdapter.MyViewHolder>() {
+class TaskAdapter(val listOfTasks: ArrayList<Task>): RecyclerView.Adapter<TaskAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskAdapter.MyViewHolder {
         Log.i("me", "onCreateViewHolder called")
