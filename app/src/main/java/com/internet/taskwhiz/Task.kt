@@ -17,12 +17,9 @@ class Task constructor(
     var description: String = "*NO DESCRIPTION*",
     // A LocalDate follows the YYYY-MM-DD model. The default I have here
     // essentially means "unset due date."
-    var dueDate: LocalDate  = LocalDate.parse("0000-01-01")
+    var dueDate: String  = "NOW!"
 ) : ViewModel(){
     // Remember, if you want to declare a secondary constructor,
     // you need to do: constructor(): this(params). This'll be a useful
     // hint for later.
-
-
-
 }
