@@ -1,11 +1,11 @@
 package com.internet.taskwhiz
 
-import java.time.LocalDate
-import androidx.lifecycle.ViewModel
+/* Okay, the purpose of this class is that it will
+ * encapsulate ALL of the dat that will be associated with a task.
+ * So, each task can be one task object.
+*/
 
-// Okay, the purpose of this class is that it will
-// encapsulate ALL of the dat that will be associated with a task.
-// So, each task can be one task object.
+import androidx.lifecycle.ViewModel
 
 // Because the Task class extends ViewModel, it should be exist all
 // throughout program execution, even when the phone is turned,

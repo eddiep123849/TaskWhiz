@@ -1,5 +1,11 @@
 package com.internet.taskwhiz
 
+/* Okay, this class should handle ALL operations associated with
+ * accessing the literal sqlite database file. If I want to access
+ * my database, then I should use this file: adding, deleting,
+ * and querying should all be taken care of by this file.
+ */
+
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.content.Context
@@ -43,9 +49,9 @@ class TaskDatabaseHandler(context: Context, name: String?,
     }
 
     fun addTask(task: Task){
-        val ADD_TASK = "insert into $TASK_TABLE_NAME" +
+        val ADD_TASK = "insert into $TASK_TABLE_NAME " +
                 "(${COLUMN_1_DETAILS[0]}, ${COLUMN_2_DETAILS[1]})" +
-                "VALUES " +
+                " VALUES " +
                 "(${task.description}, ${task.dueDate})"
         val db = this.writableDatabase
         db.execSQL(ADD_TASK)
@@ -71,5 +77,13 @@ class TaskDatabaseHandler(context: Context, name: String?,
         }
         db.close()
         return result
+    }
+
+    fun getAllTasks(): Array<Task> {
+        val GET_ALL_QUERY = "SELECT * FROM $TASK_TABLE_NAME"
+        val db = this.writableDatabase
+        val cursor = db.rawQuery(GET_ALL_QUERY, null)
+
+        cursor.moveToNext()
     }
 }

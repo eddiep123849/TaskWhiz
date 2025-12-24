@@ -1,5 +1,11 @@
 package com.internet.taskwhiz
 
+/* This class handles what a RecyclerView will display.
+ * HOW these items are displayed will be handled by the
+ * LayoutManager of the individual RecyclerView, but WHAT will
+ * be displayed is handled by this class.
+ */
+
 import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,7 +20,6 @@ class TaskAdapter(val listOfTasks: ArrayList<Task>): RecyclerView.Adapter<TaskAd
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskAdapter.MyViewHolder {
         Log.i("me", "onCreateViewHolder called")
-
 
         // I have a sample layout of what a task should look like.
         return MyViewHolder(
@@ -34,7 +39,7 @@ class TaskAdapter(val listOfTasks: ArrayList<Task>): RecyclerView.Adapter<TaskAd
         val localDateText: TextView = linearLayout.getChildAt(1) as TextView
 
         descriptionText.text = listOfTasks.get(position).description
-        localDateText.text   = listOfTasks.get(position).dueDate.toString()
+        localDateText.text   = listOfTasks.get(position).dueDate
 
     }
 
@@ -45,11 +50,10 @@ class TaskAdapter(val listOfTasks: ArrayList<Task>): RecyclerView.Adapter<TaskAd
 
 
     public class MyViewHolder: RecyclerView.ViewHolder {
+        // Yeah, my viewholder class holds a single view. That's what it does.
         val view: View
         constructor(layoutView: View): super(layoutView){
             view = layoutView
         }
     }
-
-
 }
