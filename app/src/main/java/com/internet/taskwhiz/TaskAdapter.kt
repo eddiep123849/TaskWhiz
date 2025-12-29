@@ -33,12 +33,15 @@ class TaskAdapter(val listOfTasks: LinkedList<Task>): RecyclerView.Adapter<TaskA
 
         val cardView: CardView = holder.view as CardView
         // Because I specifically created a layout file to use, I can be confident
-        // that the first and second children will always be the same. The CardView has
-        // a linear layout, and the linear layout will always have two TextViews inside.
+        // that the second and third children will always be the same. The CardView has
+        // a linear layout, and the linear layout will always have three TextViews inside:
+        // a task number, a description, and a due date.
         val linearLayout: LinearLayout = cardView.getChildAt(0) as LinearLayout
-        val descriptionText: TextView = linearLayout.getChildAt(0) as TextView
-        val localDateText: TextView = linearLayout.getChildAt(1) as TextView
+        val taskNumberText: TextView = linearLayout.getChildAt(0) as TextView
+        val descriptionText: TextView = linearLayout.getChildAt(1) as TextView
+        val localDateText: TextView = linearLayout.getChildAt(2) as TextView
 
+        taskNumberText.text  = "Task Number: $position"
         descriptionText.text = listOfTasks.get(position).description
         localDateText.text   = listOfTasks.get(position).dueDate
 

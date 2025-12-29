@@ -16,6 +16,11 @@ import java.util.LinkedList
  * If I need to use a ViewModel, then I should make an instance of this class to handle it.
  */
 
+/* Technically speaking, it's possible to just ViewModelHandler.getTasks().whatever to handle
+ * the list of tasks yourself in the viewmodel, but I'm going to try and use this class as
+ * an intermediary and NOT do that.
+ */
+
 // Once an instance of ViewModelHandler is created, you cannot directly access its members.
 // I'll control what can be used here.
 class ViewModelHandler(private val context: Context,
@@ -60,6 +65,16 @@ class ViewModelHandler(private val context: Context,
             }
         }
         return gotDeleted
+    }
+
+    // true means it worked, false means nothing happened
+    fun deleteTaskAt(index: Int): Boolean {
+        if (index >= 0 && index < viewModel.tasklist.size) {
+            viewModel.tasklist.removeAt(index)
+            return true
+        }
+        else
+            return false
     }
 
     fun getSize() = viewModel.tasklist.size

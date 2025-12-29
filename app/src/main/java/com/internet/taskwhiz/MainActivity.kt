@@ -73,15 +73,22 @@ class MainActivity : AppCompatActivity() {
 
         binding.addTask.setOnClickListener{
             builder
-                .setView(R.layout.dialog_layout)
-                .setPositiveButton("Add Task") {dialog, which -> addTask() }
+                .setView(dialogBinding.root)
+                .setPositiveButton("Add Task") {dialog, which -> addSpecificTask(
+                    Task(
+                        dialogBinding.editDescription.text.toString(),
+                        dialogBinding.editDueDate.text.toString()
+                    )
+                ) }
                 .setNegativeButton("Cancel"){dialog, which -> }
                     .create().show()
+
         }
 
         binding.deleteTask.setOnClickListener{
             builder
-                .setPositiveButton("Delete Task"){dialog, which -> deleteTask()}
+                .setView(null) // The null view resets it.
+                .setPositiveButton("Delete Task"){dialog, which -> deleteLastTask()}
                 .setNegativeButton("Cancel") {dialog, which -> }
                     .create().show()
 
@@ -97,7 +104,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun addTask(){
+    private fun addGenericTask(){
         // The below is my nifty way to add more tasks
         // with unique descriptions.
         this.taskmodelhandler.addTask(Task("Additional task ${taskmodelhandler.getSize() + 1}"))
@@ -107,7 +114,13 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = TaskAdapter(taskmodelhandler.getTasks())
     }
 
-    private fun deleteTask(){
+    private fun addSpecificTask(task: Task) {
+        taskmodelhandler.addTask(task)
+        // When you update the adapter, the recyclerView updates what it displays.
+        recyclerView.adapter = TaskAdapter(taskmodelhandler.getTasks())
+    }
+
+    private fun deleteLastTask(){
         // If we're going to delete a task, we better be sure that it actually has
         // something we can remove.
         if (taskmodelhandler.getSize() == 0){
@@ -120,5 +133,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun deleteSpecificTask(index: Int){
+        taskmodelhandler.deleteTaskAt(index)
+    }
 
 }
