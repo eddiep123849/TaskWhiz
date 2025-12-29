@@ -6,6 +6,7 @@ package com.internet.taskwhiz
 */
 
 import androidx.lifecycle.ViewModel
+import android.util.Log
 
 // Because the Task class extends ViewModel, it should be exist all
 // throughout program execution, even when the phone is turned,
@@ -22,4 +23,10 @@ class Task constructor(
     // Remember, if you want to declare a secondary constructor,
     // you need to do: constructor(): this(params). This'll be a useful
     // hint for later.
+
+    // This function will help me to see what an individual task is.
+    // It's really just a convenience print.
+    fun printMe(){
+        Log.i("task", "description: $description | dueDate: $dueDate")
+    }
 }

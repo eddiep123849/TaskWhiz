@@ -9,6 +9,7 @@ package com.internet.taskwhiz
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.content.Context
+import java.util.LinkedList
 
 class TaskDatabaseHandler(context: Context, name: String?,
                           factory: SQLiteDatabase.CursorFactory?, version: Int):
@@ -22,12 +23,12 @@ class TaskDatabaseHandler(context: Context, name: String?,
         const val ACTUAL_SQL_FILE_NAME = "dataBruh.db"
         const val TASK_TABLE_NAME = "tasks"
         // Not sure if I'll use the below column, but it's here.
-        val COLUMN_PRIMARY_KEY = arrayOf("id", "integer primary key")
+        val COLUMN_PRIMARY_KEY = arrayOf("id", "INTEGER PRIMARY KEY")
         // The below stores the name and type of column 1, respectively.
-        val COLUMN_1_DETAILS = arrayOf("description", "text")
+        val COLUMN_1_DETAILS = arrayOf("description", "TEXT")
 
         // The below stores the name and type of column 2, respectively.
-        val COLUMN_2_DETAILS = arrayOf("due_date", "text")
+        val COLUMN_2_DETAILS = arrayOf("due_date", "TEXT")
     }
 
     override fun onCreate(db: SQLiteDatabase): Unit{
@@ -79,11 +80,56 @@ class TaskDatabaseHandler(context: Context, name: String?,
         return result
     }
 
-    fun getAllTasks(): Array<Task> {
+    // This deletes all tasks. I bet you didn't need this comment to know that.
+    fun deleteAllTasks() {
+        val DELETE_ALL_QUERY = "DELETE fRoM $TASK_TABLE_NAME"
+        val db = this.writableDatabase
+        // Goodbye, rows
+        db.execSQL(DELETE_ALL_QUERY)
+    }
+
+    // Yeah, we return a list of all tasks in the database.
+    fun getAllTasks(): LinkedList<Task> {
+        // The below list will store the tasks from the db,
+        // if there are any.
+        val taskList = LinkedList<Task>()
+        // The below query should return ALL rows in the table.
         val GET_ALL_QUERY = "SELECT * FROM $TASK_TABLE_NAME"
         val db = this.writableDatabase
         val cursor = db.rawQuery(GET_ALL_QUERY, null)
 
-        cursor.moveToNext()
+        // We'll go through all of the rows in the cursor object, which
+        // should be all of the rows in the table because of the above query.
+        for (i in 0 until cursor.count)
+            // I have to type cursor a lot here, so I decided to use the "let" method.
+            // It's a lot easier to type "it" than "cursor" every time.
+            cursor.let {
+                // Point to the current row
+                it.moveToPosition(i)
+                // Get the correct indexes for each column based off their names.
+                val descriptionColumnIndex: Int = it.getColumnIndex(COLUMN_1_DETAILS[0])
+                val dueDateColumnIndex: Int = it.getColumnIndex(COLUMN_2_DETAILS[0])
+                // Get the column data for the row we're on.
+                val currentDescription: String = it.getString(descriptionColumnIndex)
+                val currentDueDate: String = it.getString(dueDateColumnIndex)
+                // Make a task with the data we got from the db and add it to out list
+                val currentTask = Task(currentDescription, currentDueDate)
+                taskList.add(currentTask)
+
+                // Debugging: let's see what it is! Hopefully, it's good!
+                currentTask.printMe()
+            }
+        // Now, taskList should contain all of the tasks stored in the database.
+        return taskList
+    }
+
+    // Takes a list of tasks and makes the db hold ONLY these tasks. It's
+    // like we're "setting" the database (hehe).
+    fun setDB(tasks: List<Task>){
+        // Reset the db
+        deleteAllTasks()
+        val db = writableDatabase
+        // Add all of the tasks in the list to the db.
+        for (task in tasks) addTask(task)
     }
 }
