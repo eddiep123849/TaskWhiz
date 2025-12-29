@@ -19,6 +19,12 @@ import java.util.LinkedList
 class ViewModelHandler(val context: Context,
                        val viewModel: TaskListViewModel) {
 
+    // The below block will make sure that the list in the ViewModel is
+    // up-to-date when this handler is created.
+    init {
+        setList()
+    }
+
     // Set our viewModel list to have all of the tasks in the db and NOTHING else.
     fun setList(){
         val db = TaskDatabaseHandler(context, null, null, TaskDatabaseHandler.DATABASE_VERSION)

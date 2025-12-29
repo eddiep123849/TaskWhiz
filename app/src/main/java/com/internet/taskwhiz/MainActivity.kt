@@ -83,6 +83,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // This is called when the the app is no longer in the foreground/is
+    // about to no longer be on the screen, I believe. This will make sure that
+    // the db is updated to hold the current tasks in the ViewModel.
+    override fun onSaveInstanceState(outState: Bundle){
+        super.onSaveInstanceState(outState)
+        taskmodelhandler.setDB()
+    }
+
 
     private fun addTask(){
         // The below is my nifty way to add more tasks
