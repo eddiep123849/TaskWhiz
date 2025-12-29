@@ -66,32 +66,36 @@ class MainActivity : AppCompatActivity() {
         // think this should allow me to be able to access it.
         val dialogBinding = DialogLayoutBinding.inflate(layoutInflater)
 
-        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
-            // Look, I set an icon! However, it only shows up if you set a title.
+        // The below sets up the Add Task dialog to specify the description and due date
+        // for a new task to be displayed. It has a title, icon, positive button
+        // to make a new task from user input, and a negative button to cancel.
+        val addBuilder: AlertDialog = AlertDialog.Builder(this)
             .setIcon(R.mipmap.eddie_icon)
             .setTitle("Wassup?")
+            .setView(dialogBinding.root)
+            .setPositiveButton("Add Task") {dialog, which -> addSpecificTask(
+                Task(
+                    dialogBinding.editDescription.text.toString(),
+                    dialogBinding.editDueDate.text.toString()
+                )
+            ) }
+            .setNegativeButton("Cancel"){dialog, which -> }
+            .create()
 
         binding.addTask.setOnClickListener{
-            builder
-                .setView(dialogBinding.root)
-                .setPositiveButton("Add Task") {dialog, which -> addSpecificTask(
-                    Task(
-                        dialogBinding.editDescription.text.toString(),
-                        dialogBinding.editDueDate.text.toString()
-                    )
-                ) }
-                .setNegativeButton("Cancel"){dialog, which -> }
-                    .create().show()
-
+            addBuilder.show()
         }
 
-        binding.deleteTask.setOnClickListener{
-            builder
-                .setView(null) // The null view resets it.
-                .setPositiveButton("Delete Task"){dialog, which -> deleteLastTask()}
-                .setNegativeButton("Cancel") {dialog, which -> }
-                    .create().show()
+        // This sets up the Delete Task dialog to be able to delete the last added task or to cancel.
+        val deleteBuilder: AlertDialog = AlertDialog.Builder(this)
+            .setIcon(R.mipmap.eddie_icon)
+            .setTitle("Wassup Dawg?")
+            .setPositiveButton("Delete Last Task"){dialog, which -> deleteLastTask()}
+            .setNegativeButton("Cancel"){dialog, which -> }
+            .create()
 
+        binding.deleteTask.setOnClickListener{
+            deleteBuilder.show()
         }
     }
 

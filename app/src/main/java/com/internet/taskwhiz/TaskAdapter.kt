@@ -41,7 +41,8 @@ class TaskAdapter(val listOfTasks: LinkedList<Task>): RecyclerView.Adapter<TaskA
         val descriptionText: TextView = linearLayout.getChildAt(1) as TextView
         val localDateText: TextView = linearLayout.getChildAt(2) as TextView
 
-        taskNumberText.text  = "Task Number: $position"
+        // Position starts at 0, so we need an offset to start at 1.
+        taskNumberText.text  = "Task Number: ${position + 1}"
         descriptionText.text = listOfTasks.get(position).description
         localDateText.text   = listOfTasks.get(position).dueDate
 
