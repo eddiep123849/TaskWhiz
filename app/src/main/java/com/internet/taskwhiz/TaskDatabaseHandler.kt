@@ -65,9 +65,10 @@ class TaskDatabaseHandler(context: Context, name: String?,
 
     fun addTask(task: Task){
         val ADD_TASK = "insert into $TASK_TABLE_NAME " +
-                "(${COLUMN_1_DETAILS[0]}, ${COLUMN_2_DETAILS[1]})" +
+                "(${COLUMN_1_DETAILS[0]}, ${COLUMN_2_DETAILS[0]})" +
                 " VALUES " +
-                "(${task.description}, ${task.dueDate})"
+                // Remember, string literals in SQL HAVE QUOTES "!
+                "(\"${task.description}\", \"${task.dueDate}\")"
         val db = this.writableDatabase
         db.execSQL(ADD_TASK)
     }
