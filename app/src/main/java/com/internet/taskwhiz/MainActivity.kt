@@ -109,8 +109,7 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun addGenericTask(){
-        // The below is my nifty way to add more tasks
-        // with unique descriptions.
+        // The below is my nifty way to add more tasks with unique descriptions.
         this.taskmodelhandler.addTask(Task("Additional task ${taskmodelhandler.getSize() + 1}"))
         // If I reassign the adapter, then the recycler view readjusts what it displays.
         // Is there a better way to update the RecyclerView? Probably, but this is
@@ -137,8 +136,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun deleteSpecificTask(index: Int){
-        taskmodelhandler.deleteTaskAt(index)
+    private fun deleteSpecificTask(index: Int): Boolean{
+        return taskmodelhandler.deleteTaskAt(index)
     }
 
 }
