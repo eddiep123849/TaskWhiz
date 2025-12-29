@@ -49,6 +49,20 @@ class TaskDatabaseHandler(context: Context, name: String?,
             android.util.Log.wtf("uh oh", "Wait, why did this happen")
     }
 
+
+
+
+
+
+
+
+    // This marks the methods I actually use to INTERACT with my database.
+
+
+
+
+
+
     fun addTask(task: Task){
         val ADD_TASK = "insert into $TASK_TABLE_NAME " +
                 "(${COLUMN_1_DETAILS[0]}, ${COLUMN_2_DETAILS[1]})" +
@@ -126,9 +140,8 @@ class TaskDatabaseHandler(context: Context, name: String?,
     // Takes a list of tasks and makes the db hold ONLY these tasks. It's
     // like we're "setting" the database (hehe).
     fun setDB(tasks: List<Task>){
-        // Reset the db
+        // Empty the db
         deleteAllTasks()
-        val db = writableDatabase
         // Add all of the tasks in the list to the db.
         for (task in tasks) addTask(task)
     }

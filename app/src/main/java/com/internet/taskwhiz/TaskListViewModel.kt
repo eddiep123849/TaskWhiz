@@ -10,7 +10,7 @@ import java.util.LinkedList
 // and allows us to keep it without doing all of that bundle stuff.
 class TaskListViewModel: ViewModel{
 
-    // Y'know, I almost NEVER use linked lists, but here I am!
+    // Y'know, I almost NEVER use linked lists, but here we are!
     public var tasklist: LinkedList<Task> = LinkedList<Task>()
 
     constructor(): super(){

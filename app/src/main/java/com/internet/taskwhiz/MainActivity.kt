@@ -31,9 +31,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var binding: ActivityMainBinding
     private var count = 0
-    // The below implements ViewModel, so it should persist through
-    // all application state changes
-    private lateinit var taskmodel: TaskListViewModel
+    // The below is my way of handling my ViewModel. I originally came up with it to solve my
+    // context problem I was having with my ViewModel implementation.
+    private lateinit var taskmodelhandler: ViewModelHandler
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,10 +48,12 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        // This needs to be in the onCreate() method and NOT as an initializer.
-        taskmodel = ViewModelProvider(this)[com.internet.taskwhiz.TaskListViewModel::class.java]
 
-        val taskAdapter = TaskAdapter(taskmodel.tasklist)
+        taskmodelhandler = ViewModelHandler(this,
+            ViewModelProvider(this)[com.internet.taskwhiz.TaskListViewModel::class.java]
+        )
+
+        val taskAdapter = TaskAdapter(taskmodelhandler.getTasks())
 
         recyclerView = binding.recyclerView
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -85,25 +87,25 @@ class MainActivity : AppCompatActivity() {
     private fun addTask(){
         // The below is my nifty way to add more tasks
         // with unique descriptions.
-        this.taskmodel.tasklist.add(Task("Additional task ${taskmodel.tasklist.size + 1}"))
+        this.taskmodelhandler.getTasks().add(Task("Additional task ${taskmodelhandler.viewModel.tasklist.size + 1}"))
         // If I reassign the adapter, then the recycler view readjusts what it displays.
         // Is there a better way to update the RecyclerView? Probably, but this is
         // how I have figured out how to do this.
-        recyclerView.adapter = TaskAdapter(taskmodel.tasklist)
+        recyclerView.adapter = TaskAdapter(taskmodelhandler.getTasks())
     }
 
     private fun deleteTask(){
         // If we're going to delete a task, we better be sure that it actually has
         // something we can remove.
-        if (taskmodel.tasklist.size == 0){
+        if (taskmodelhandler.viewModel.tasklist.size == 0){
             AlertDialog.Builder(this).setTitle("You can't remove anything!")
                 .setNeutralButton("C'mon! (Click here)"){dialog, which -> }.create().show()
         }
         else {
-            this.taskmodel.tasklist.let {
+            this.taskmodelhandler.viewModel.tasklist.let {
                 it.removeAt(it.size - 1)
             }
-            recyclerView.adapter = TaskAdapter(taskmodel.tasklist)
+            recyclerView.adapter = TaskAdapter(taskmodelhandler.viewModel.tasklist)
         }
     }
 

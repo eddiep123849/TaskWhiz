@@ -1,6 +1,7 @@
 package com.internet.taskwhiz
 
 import android.content.Context
+import java.util.LinkedList
 
 /* The purpose of this class is to clear up this whole context problem I've been having with
  * my TaskListViewModel class. I figure that having a separate class through which I HANDLE
@@ -16,6 +17,27 @@ import android.content.Context
  */
 
 class ViewModelHandler(val context: Context,
-                       val dynamicData: TaskListViewModel) {
+                       val viewModel: TaskListViewModel) {
 
+    // Set our viewModel list to have all of the tasks in the db and NOTHING else.
+    fun setList(){
+        val db = TaskDatabaseHandler(context, null, null, TaskDatabaseHandler.DATABASE_VERSION)
+        viewModel.tasklist = db.getAllTasks()
+        // Does the below even do anything?
+        db.close()
+    }
+
+    // Set our db to have all of the tasks in the viewModel list and NOTHING else.
+    fun setDB(){
+        val db = TaskDatabaseHandler(context, null, null, TaskDatabaseHandler.DATABASE_VERSION)
+        db.setDB(viewModel.tasklist)
+        // Again, why should I even do the below?
+        db.close()
+    }
+    
+    fun getTasks(): LinkedList<Task>{
+        return viewModel.tasklist
+    }
+    
+    
 }
