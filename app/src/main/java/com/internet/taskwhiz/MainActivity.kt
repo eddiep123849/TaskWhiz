@@ -95,7 +95,7 @@ class MainActivity : AppCompatActivity() {
     private fun addTask(){
         // The below is my nifty way to add more tasks
         // with unique descriptions.
-        this.taskmodelhandler.getTasks().add(Task("Additional task ${taskmodelhandler.viewModel.tasklist.size + 1}"))
+        this.taskmodelhandler.addTask(Task("Additional task ${taskmodelhandler.getSize() + 1}"))
         // If I reassign the adapter, then the recycler view readjusts what it displays.
         // Is there a better way to update the RecyclerView? Probably, but this is
         // how I have figured out how to do this.
@@ -105,15 +105,13 @@ class MainActivity : AppCompatActivity() {
     private fun deleteTask(){
         // If we're going to delete a task, we better be sure that it actually has
         // something we can remove.
-        if (taskmodelhandler.viewModel.tasklist.size == 0){
+        if (taskmodelhandler.getSize() == 0){
             AlertDialog.Builder(this).setTitle("You can't remove anything!")
                 .setNeutralButton("C'mon! (Click here)"){dialog, which -> }.create().show()
         }
         else {
-            this.taskmodelhandler.viewModel.tasklist.let {
-                it.removeAt(it.size - 1)
-            }
-            recyclerView.adapter = TaskAdapter(taskmodelhandler.viewModel.tasklist)
+            this.taskmodelhandler.deleteLastTask()
+            recyclerView.adapter = TaskAdapter(taskmodelhandler.getTasks())
         }
     }
 

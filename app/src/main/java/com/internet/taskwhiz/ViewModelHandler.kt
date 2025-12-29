@@ -16,8 +16,10 @@ import java.util.LinkedList
  * If I need to use a ViewModel, then I should make an instance of this class to handle it.
  */
 
-class ViewModelHandler(val context: Context,
-                       val viewModel: TaskListViewModel) {
+// Once an instance of ViewModelHandler is created, you cannot directly access its members.
+// I'll control what can be used here.
+class ViewModelHandler(private val context: Context,
+                       private val viewModel: TaskListViewModel) {
 
     // The below block will make sure that the list in the ViewModel is
     // up-to-date when this handler is created.
@@ -26,7 +28,7 @@ class ViewModelHandler(val context: Context,
     }
 
     // Set our viewModel list to have all of the tasks in the db and NOTHING else.
-    fun setList(){
+    fun setList() {
         val db = TaskDatabaseHandler(context, null, null, TaskDatabaseHandler.DATABASE_VERSION)
         viewModel.tasklist = db.getAllTasks()
         // Does the below even do anything?
@@ -34,16 +36,41 @@ class ViewModelHandler(val context: Context,
     }
 
     // Set our db to have all of the tasks in the viewModel list and NOTHING else.
-    fun setDB(){
+    fun setDB() {
         val db = TaskDatabaseHandler(context, null, null, TaskDatabaseHandler.DATABASE_VERSION)
         db.setDB(viewModel.tasklist)
         // Again, why should I even do the below?
         db.close()
     }
-    
-    fun getTasks(): LinkedList<Task>{
+
+    fun getTasks(): LinkedList<Task> {
         return viewModel.tasklist
     }
+
+    fun addTask(task: Task) {
+        viewModel.tasklist.add(task)
+    }
+
+    // It's possible that the list is empty, which is why
+    // I'll provide some feedback in the form of a Boolean.
+    fun deleteLastTask(): Boolean {
+        var gotDeleted = false
+        // Once I found out what scope functions were,
+        // I have since found them to be very useful.
+        viewModel.tasklist.let {
+            if (it.isEmpty()) ; // We can't do anything in this case.
+            else {
+                // There's actually something to remove.
+                it.removeLast()
+                gotDeleted = true
+            }
+        }
+        return gotDeleted
+    }
+
+    fun getSize() = viewModel.tasklist.size
+
+
     
     
 }
