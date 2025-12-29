@@ -101,12 +101,12 @@ class TaskDatabaseHandler(context: Context, name: String?,
         val db = this.writableDatabase
         // Goodbye, rows
         db.execSQL(DELETE_ALL_QUERY)
+        db.close()
     }
 
     // Yeah, we return a list of all tasks in the database.
     fun getAllTasks(): LinkedList<Task> {
-        // The below list will store the tasks from the db,
-        // if there are any.
+        // The below list will store the tasks from the db, if there are any.
         val taskList = LinkedList<Task>()
         // The below query should return ALL rows in the table.
         val GET_ALL_QUERY = "SELECT * FROM $TASK_TABLE_NAME"

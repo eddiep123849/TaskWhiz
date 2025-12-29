@@ -49,7 +49,8 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        taskmodelhandler = ViewModelHandler(this,
+        taskmodelhandler = ViewModelHandler(
+            this,
             ViewModelProvider(this)[com.internet.taskwhiz.TaskListViewModel::class.java]
         )
 
@@ -66,17 +67,21 @@ class MainActivity : AppCompatActivity() {
         val dialogBinding = DialogLayoutBinding.inflate(layoutInflater)
 
         val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+            // Look, I set an icon! However, it only shows up if you set a title.
+            .setIcon(R.mipmap.eddie_icon)
+            .setTitle("Wassup?")
 
         binding.addTask.setOnClickListener{
-                builder
-                    .setPositiveButton("Add Task") {dialog, which -> addTask() }
-                    .setNegativeButton("Cancel"){dialog, which -> }
-                        .create().show()
+            builder
+                .setView(R.layout.dialog_layout)
+                .setPositiveButton("Add Task") {dialog, which -> addTask() }
+                .setNegativeButton("Cancel"){dialog, which -> }
+                    .create().show()
         }
 
         binding.deleteTask.setOnClickListener{
-            builder.
-            setPositiveButton("Delete Task"){dialog, which -> deleteTask()}
+            builder
+                .setPositiveButton("Delete Task"){dialog, which -> deleteTask()}
                 .setNegativeButton("Cancel") {dialog, which -> }
                     .create().show()
 

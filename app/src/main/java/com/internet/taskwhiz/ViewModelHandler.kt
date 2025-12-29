@@ -23,9 +23,7 @@ class ViewModelHandler(private val context: Context,
 
     // The below block will make sure that the list in the ViewModel is
     // up-to-date when this handler is created.
-    init {
-        setList()
-    }
+    init { setList() }
 
     // Set our viewModel list to have all of the tasks in the db and NOTHING else.
     fun setList() {
@@ -43,13 +41,9 @@ class ViewModelHandler(private val context: Context,
         db.close()
     }
 
-    fun getTasks(): LinkedList<Task> {
-        return viewModel.tasklist
-    }
+    fun getTasks(): LinkedList<Task> { return viewModel.tasklist }
 
-    fun addTask(task: Task) {
-        viewModel.tasklist.add(task)
-    }
+    fun addTask(task: Task) { viewModel.tasklist.add(task) }
 
     // It's possible that the list is empty, which is why
     // I'll provide some feedback in the form of a Boolean.
