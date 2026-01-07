@@ -19,6 +19,7 @@ import java.util.LinkedList
 
 class TaskAdapter(val listOfTasks: LinkedList<Task>): RecyclerView.Adapter<TaskAdapter.MyViewHolder>() {
 
+    // Make a MyViewHolder instance.
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskAdapter.MyViewHolder {
         Log.i("me", "onCreateViewHolder called")
 
@@ -28,6 +29,7 @@ class TaskAdapter(val listOfTasks: LinkedList<Task>): RecyclerView.Adapter<TaskA
         )
     }
 
+    // Set the properties of a MyViewHolder instance.
     override fun onBindViewHolder(holder: TaskAdapter.MyViewHolder, position: Int) {
         Log.i("me","onBindViewHolder called")
 
@@ -48,6 +50,7 @@ class TaskAdapter(val listOfTasks: LinkedList<Task>): RecyclerView.Adapter<TaskA
 
     }
 
+    // Determines how many times we make and set the properties of a MyViewHolder instance.
     override fun getItemCount(): Int {
         Log.i("me", "getItemCount called")
         return listOfTasks.size;
