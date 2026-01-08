@@ -40,9 +40,8 @@ class MainActivity : AppCompatActivity() {
         // view binding setup code insertion. I hope I remembered everything,
         // because it's been a while since I've done this.
         binding = ActivityMainBinding.inflate(layoutInflater)
-        val view = binding.root
         enableEdgeToEdge()
-        setContentView(view)
+        setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -147,7 +146,8 @@ class MainActivity : AppCompatActivity() {
     // This will set a longClickListener on each Task in the RecyclerView so that it can
     // be deleted by a longClick.
     private fun setLongClickDeletes() {
-        binding.recyclerView.
+        val currAdapter = binding.recyclerView.adapter
+        //val num = binding.recyclerView.
     }
 
 }

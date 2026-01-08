@@ -18,15 +18,25 @@ import androidx.recyclerview.widget.RecyclerView
 import java.util.LinkedList
 
 class TaskAdapter(val listOfTasks: LinkedList<Task>): RecyclerView.Adapter<TaskAdapter.MyViewHolder>() {
+    // I'm having a problem with setting on click listeners to the cardView objects here,
+    // so I decided to add this in to be able to reference them after they're created. I don't
+    // know what happens after they're created and then passed to the RecyclerView, and I also
+    // don't know how to access these objects after their creation here, which is why I added
+    // the below list. It's an Eddie-fix, but shoot, if it works, it works!
+    val listOfViewHolderReferences: LinkedList<MyViewHolder> = LinkedList<MyViewHolder>()
 
     // Make a MyViewHolder instance.
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskAdapter.MyViewHolder {
         Log.i("me", "onCreateViewHolder called")
 
-        // I have a sample layout of what a task should look like.
-        return MyViewHolder(
+        listOfViewHolderReferences.add(
+            MyViewHolder(
+                // I have a sample layout of what a task should look like.
             LayoutInflater.from(parent.context).inflate(R.layout.task_card, parent, false)
+            )
         )
+        // Return the reference to the last ViewHolder in the list.
+        return listOfViewHolderReferences.last()
     }
 
     // Set the properties of a MyViewHolder instance.
