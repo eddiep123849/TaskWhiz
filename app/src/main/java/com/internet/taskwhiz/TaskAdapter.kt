@@ -30,12 +30,13 @@ class TaskAdapter(val listOfTasks: LinkedList<Task>): RecyclerView.Adapter<TaskA
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskAdapter.MyViewHolder {
         Log.i("me", "onCreateViewHolder called")
 
-        listOfViewHolderReferences.add(
+        listOfViewHolderReferences.addLast(
             MyViewHolder(
                 // I have a sample layout of what a task should look like.
             LayoutInflater.from(parent.context).inflate(R.layout.task_card, parent, false)
             )
         )
+        Log.i("important", "size: ${listOfViewHolderReferences.size}")
         // Return the reference to the last ViewHolder in the list.
         return listOfViewHolderReferences.last()
     }

@@ -81,7 +81,13 @@ class ViewModelHandler(private val context: Context,
 
     // true means it worked, false means nothing happened.
     fun deleteSpecifiedTask(specificTask: Task): Boolean {
-        return viewModel.tasklist.remove(specificTask)
+        for (task in viewModel.tasklist) {
+            if (task.equals(specificTask)) {
+                viewModel.tasklist.remove(task)
+                return true
+            }
+        }
+        return false
     }
 
     fun getSize() = viewModel.tasklist.size

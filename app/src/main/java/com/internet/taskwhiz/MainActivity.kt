@@ -81,6 +81,7 @@ class MainActivity : AppCompatActivity() {
                 )
             ) }
             .setNegativeButton("Cancel"){_, _ -> }
+            .setNeutralButton("Setup Click Deletes! (Experimental)"){_,_ -> setLongClickDeletes()}
             .create()
 
         binding.addTask.setOnClickListener{
@@ -98,6 +99,10 @@ class MainActivity : AppCompatActivity() {
         binding.deleteTask.setOnClickListener{
             deleteBuilder.show()
         }
+
+        Log.i("trouble", "size of referencelist: ${taskAdapter.listOfViewHolderReferences.size}")
+        val useMe = recyclerView.adapter as TaskAdapter
+        Log.i("trouble", "size of referencelist: ${useMe.listOfViewHolderReferences.size}")
     }
 
     // This is called when the the app is no longer in the foreground/is
@@ -148,7 +153,8 @@ class MainActivity : AppCompatActivity() {
     // This will set a longClickListener on each Task in the RecyclerView so that it can
     // be deleted by a longClick.
     private fun setLongClickDeletes() {
-        val taskAdapter: TaskAdapter = binding.recyclerView.adapter as TaskAdapter
+        Log.i("longClick", "setLongClickDeletes() called")
+        val taskAdapter: TaskAdapter = recyclerView.adapter as TaskAdapter
         val listOfViewHolderReferences: LinkedList<TaskAdapter.MyViewHolder> = taskAdapter.listOfViewHolderReferences
 
         // It's been a LONG time since I've done the below in Android.
@@ -160,15 +166,22 @@ class MainActivity : AppCompatActivity() {
             // If every time we change our TaskList data we make sure to update our recyclerView,
             // then we will successfully make sure that the recyclerView, dynamic and persistent
             // data are synchronized.
-            viewHolder.itemView.setOnLongClickListener {
+            Log.i("longClick", "Setting up a listener.")
+            val searchForThisTask = taskmodelhandler.getTask(i)
+            searchForThisTask.printMe()
+
+            viewHolder.view.setOnLongClickListener {
                 // Delete the task from the dynamic task list.
-                taskmodelhandler.deleteSpecifiedTask(taskmodelhandler.getTask(i++))
+                Log.i("longClick", "longClick listener code is running. i: $i")
+                taskmodelhandler.deleteSpecifiedTask(searchForThisTask)
                 // Make sure the change is reflected
                 binding.recyclerView.adapter = TaskAdapter(taskmodelhandler.getTasks())
                 // Keep the click action from going to other listeners.
                 true
             }
+            i++
         }
     }
+
 
 }

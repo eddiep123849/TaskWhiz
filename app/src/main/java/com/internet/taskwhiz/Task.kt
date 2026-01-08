@@ -29,4 +29,13 @@ class Task constructor(
     fun printMe(){
         Log.i("task", "description: $description | dueDate: $dueDate")
     }
+
+    // A simple function to tell when two tasks have the same data.
+    fun equals(task: Task): Boolean {
+        if (description.equals(task.description) &&
+            dueDate.equals(task.dueDate)) {
+            return true
+        }
+        else return false
+    }
 }
