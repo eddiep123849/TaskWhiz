@@ -48,6 +48,8 @@ class ViewModelHandler(private val context: Context,
 
     fun getTasks(): LinkedList<Task> { return viewModel.tasklist }
 
+    fun getTask(index: Int) = viewModel.tasklist[index]
+
     fun addTask(task: Task) { viewModel.tasklist.add(task) }
 
     // It's possible that the list is empty, which is why
@@ -75,6 +77,11 @@ class ViewModelHandler(private val context: Context,
         }
         else
             return false
+    }
+
+    // true means it worked, false means nothing happened.
+    fun deleteSpecifiedTask(specificTask: Task): Boolean {
+        return viewModel.tasklist.remove(specificTask)
     }
 
     fun getSize() = viewModel.tasklist.size

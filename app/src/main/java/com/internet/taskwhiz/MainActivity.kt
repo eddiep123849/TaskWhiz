@@ -25,6 +25,7 @@ import java.io.FileInputStream
 import java.io.FileReader
 import java.io.FileWriter
 import java.io.InputStream
+import java.util.LinkedList
 
 class MainActivity : AppCompatActivity() {
 
@@ -72,13 +73,14 @@ class MainActivity : AppCompatActivity() {
             .setIcon(R.mipmap.eddie_icon)
             .setTitle("Wassup?")
             .setView(dialogBinding.root)
-            .setPositiveButton("Add Task") {dialog, which -> addSpecificTask(
+            // In Kotlin, unused lambda parameters can be substituted with _.
+            .setPositiveButton("Add Task") {_, _ -> addSpecificTask(
                 Task(
                     dialogBinding.editDescription.text.toString(),
                     dialogBinding.editDueDate.text.toString()
                 )
             ) }
-            .setNegativeButton("Cancel"){dialog, which -> }
+            .setNegativeButton("Cancel"){_, _ -> }
             .create()
 
         binding.addTask.setOnClickListener{
@@ -146,8 +148,27 @@ class MainActivity : AppCompatActivity() {
     // This will set a longClickListener on each Task in the RecyclerView so that it can
     // be deleted by a longClick.
     private fun setLongClickDeletes() {
-        val currAdapter = binding.recyclerView.adapter
-        //val num = binding.recyclerView.
+        val taskAdapter: TaskAdapter = binding.recyclerView.adapter as TaskAdapter
+        val listOfViewHolderReferences: LinkedList<TaskAdapter.MyViewHolder> = taskAdapter.listOfViewHolderReferences
+
+        // It's been a LONG time since I've done the below in Android.
+        var i = 0
+        for (viewHolder in listOfViewHolderReferences){
+            // To take a view out of the recyclerView with a longClick, we need to do two things:
+            // 1: remove that task from the dynamic list of tasks to show the update.
+            // 2: make sure the TaskAdapter of the recyclerView is updated to reflect this change.
+            // If every time we change our TaskList data we make sure to update our recyclerView,
+            // then we will successfully make sure that the recyclerView, dynamic and persistent
+            // data are synchronized.
+            viewHolder.itemView.setOnLongClickListener {
+                // Delete the task from the dynamic task list.
+                taskmodelhandler.deleteSpecifiedTask(taskmodelhandler.getTask(i++))
+                // Make sure the change is reflected
+                binding.recyclerView.adapter = TaskAdapter(taskmodelhandler.getTasks())
+                // Keep the click action from going to other listeners.
+                true
+            }
+        }
     }
 
 }

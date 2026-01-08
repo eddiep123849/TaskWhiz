@@ -25,7 +25,8 @@ class TaskAdapter(val listOfTasks: LinkedList<Task>): RecyclerView.Adapter<TaskA
     // the below list. It's an Eddie-fix, but shoot, if it works, it works!
     val listOfViewHolderReferences: LinkedList<MyViewHolder> = LinkedList<MyViewHolder>()
 
-    // Make a MyViewHolder instance.
+    // Make a MyViewHolder instance. Also, I believe the parent parameter is the RecyclerView into which
+    // we'll be putting our ViewHolders! That's what that parameter is, I'm pretty sure!
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskAdapter.MyViewHolder {
         Log.i("me", "onCreateViewHolder called")
 
@@ -69,6 +70,8 @@ class TaskAdapter(val listOfTasks: LinkedList<Task>): RecyclerView.Adapter<TaskA
 
     public class MyViewHolder: RecyclerView.ViewHolder {
         // Yeah, my viewholder class holds a single view. That's what it does.
+        // New addition, it's possible that the superclass already holds a variable for the view,
+        // so it may be that me adding in a View instance variable is unnecessary.
         val view: View
         constructor(layoutView: View): super(layoutView){
             view = layoutView
