@@ -43,8 +43,6 @@ class TaskAdapter(val listOfTasks: LinkedList<Task>): RecyclerView.Adapter<TaskA
 
     // Set the properties of a MyViewHolder instance.
     override fun onBindViewHolder(holder: TaskAdapter.MyViewHolder, position: Int) {
-        Log.i("TaskAdapter","onBindViewHolder called")
-
         val cardView: CardView = holder.view as CardView
         // Because I specifically created a layout file to use, I can be confident
         // that the second and third children will always be the same. The CardView has
@@ -60,11 +58,14 @@ class TaskAdapter(val listOfTasks: LinkedList<Task>): RecyclerView.Adapter<TaskA
         descriptionText.text = listOfTasks.get(position).description
         localDateText.text   = listOfTasks.get(position).dueDate
 
+        Log.i("TaskAdapter","onBindViewHolder holder: ${descriptionText.text}, ${localDateText.text}")
+
     }
 
     // Determines how many times we make and set the properties of a MyViewHolder instance.
     override fun getItemCount(): Int {
-        Log.i("TaskAdapter", "getItemCount called")
+        // This function gets called a LOT, so I commented out the below message.
+        // Log.i("TaskAdapter", "getItemCount called")
         return listOfTasks.size;
     }
 

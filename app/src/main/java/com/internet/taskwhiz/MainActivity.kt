@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.animation.AnimationUtils
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -165,34 +166,44 @@ class MainActivity : AppCompatActivity() {
             // If every time we change our TaskList data we make sure to update our recyclerView,
             // then we will successfully make sure that the recyclerView, dynamic and persistent
             // data are synchronized.
-            Log.i("MainActivity", "Setting up a listener.")
-            val searchForThisTask = taskmodelhandler.getTask(i)
-            searchForThisTask.printMe()
+            val cardView = viewHolder.view as CardView
+            cardView.let{
+                // One of my CardViews in the adapter holds a LinearLayout,
+                // which holds 3 TextViews.
+                it.setOnLongClickListener{_ ->
+                    /* Now, because there are a limited number (I think 5 maximum at a
+                     * time) of ViewHolders that get created, we need to see WHICH
+                     * task is currently being displayed in THIS particular ViewModel.
+                     * So, here are my new steps for the longClick delete:
+                     * 1) See which task is currently being displayed on a specific
+                     *    ViewHolder.
+                     * 2) Once we figure out which task is being displayed in the
+                     *    particular ViewHolder that was clicked, we then search for it
+                     *    in the dynamic list of tasks and delete it.
+                     * 3) Once we delete the task from the dynamic list of tasks, we
+                     *    then update the adapter to reflect this change.
+                     */
+                    val linearLayout = it.getChildAt(0) as LinearLayout
+                    val description = (linearLayout.getChildAt(1) as TextView).text.toString()
+                    val dueDate = (linearLayout.getChildAt(2) as TextView).text.toString()
+                    val clickedTask = Task(description, dueDate)
+                    // Now, we try to see if such a task is in our list. We SHOULD
+                    // find such a task in our list
+                    if (taskmodelhandler.deleteSpecifiedTask(clickedTask)){
+                        Log.i("MainActivity", "We successfully found and deleted task:")
+                        clickedTask.printMe()
+                        Log.i("MainActivity", "")
+                        recyclerView.adapter = TaskAdapter(taskmodelhandler.getTasks())
+                    }
+                    else {
+                        Log.i("MainActivity", "We didn't find task:")
+                        clickedTask.printMe()
+                    }
 
-            viewHolder.view.setOnLongClickListener {
-                // Delete the task from the dynamic task list.
-                Log.i("MainActivity", "longClick listener code is running. i: $i")
-                taskmodelhandler.deleteSpecifiedTask(searchForThisTask)
-                // Make sure the change is reflected
-                binding.recyclerView.adapter = TaskAdapter(taskmodelhandler.getTasks())
-                // Keep the click action from going to other listeners.
-                true
+                    // Don't pass this event to other listeners
+                    true
+                }
             }
-            i++
         }
     }
-
-    /* Today's date is 5/7/2026, and I'd like to see if I can get the
-     * long click deletes to work for the tasks. A different approach
-     * may have more success... wait, could I do
-     */
-    fun setOnLongClickDeletesRevised() {
-        val taskAdapter = recyclerView.adapter as TaskAdapter
-        for (thing in taskAdapter.listOfViewHolderReferences){
-
-        }
-
-    }
-
-
 }
