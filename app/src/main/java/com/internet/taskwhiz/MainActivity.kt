@@ -183,5 +183,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun setOnLongCLickDeletesRevised() {
+
+    }
+
 
 }
