@@ -31,7 +31,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var binding: ActivityMainBinding
-    private var count = 0
     // The below is my way of handling my ViewModel. I originally came up with it to solve my
     // context problem I was having with my ViewModel implementation.
     private lateinit var taskmodelhandler: ViewModelHandler
@@ -183,7 +182,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun setOnLongCLickDeletesRevised() {
+    /* Today's date is 5/7/2026, and I'd like to see if I can get the
+     * long click deletes to work for the tasks. A different approach
+     * may have more success... wait, could I do
+     */
+    fun setOnLongClickDeletesRevised() {
+        val taskAdapter = recyclerView.adapter
 
     }
 
