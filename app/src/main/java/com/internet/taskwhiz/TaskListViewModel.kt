@@ -14,7 +14,7 @@ class TaskListViewModel: ViewModel{
     public var tasklist: LinkedList<Task> = LinkedList<Task>()
 
     constructor(): super(){
-        Log.i("me", "TaskListViewModel Created")
+        Log.i("TaskListViewModel", "TaskListViewModel Created")
     }
 
     // onCleared() is called right before the ViewModel is going to

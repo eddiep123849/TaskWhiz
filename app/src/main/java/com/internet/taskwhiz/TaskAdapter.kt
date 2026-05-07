@@ -28,7 +28,7 @@ class TaskAdapter(val listOfTasks: LinkedList<Task>): RecyclerView.Adapter<TaskA
     // Make a MyViewHolder instance. Also, I believe the parent parameter is the RecyclerView into which
     // we'll be putting our ViewHolders! That's what that parameter is, I'm pretty sure!
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskAdapter.MyViewHolder {
-        Log.i("me", "onCreateViewHolder called")
+        Log.i("TaskAdapter", "onCreateViewHolder called")
 
         listOfViewHolderReferences.addLast(
             MyViewHolder(
@@ -36,14 +36,14 @@ class TaskAdapter(val listOfTasks: LinkedList<Task>): RecyclerView.Adapter<TaskA
             LayoutInflater.from(parent.context).inflate(R.layout.task_card, parent, false)
             )
         )
-        Log.i("important", "size: ${listOfViewHolderReferences.size}")
+        Log.i("TaskAdapter", "size: ${listOfViewHolderReferences.size}")
         // Return the reference to the last ViewHolder in the list.
         return listOfViewHolderReferences.last()
     }
 
     // Set the properties of a MyViewHolder instance.
     override fun onBindViewHolder(holder: TaskAdapter.MyViewHolder, position: Int) {
-        Log.i("me","onBindViewHolder called")
+        Log.i("TaskAdapter","onBindViewHolder called")
 
         val cardView: CardView = holder.view as CardView
         // Because I specifically created a layout file to use, I can be confident
@@ -64,7 +64,7 @@ class TaskAdapter(val listOfTasks: LinkedList<Task>): RecyclerView.Adapter<TaskA
 
     // Determines how many times we make and set the properties of a MyViewHolder instance.
     override fun getItemCount(): Int {
-        Log.i("me", "getItemCount called")
+        Log.i("TaskAdapter", "getItemCount called")
         return listOfTasks.size;
     }
 

@@ -46,7 +46,7 @@ class TaskDatabaseHandler(context: Context, name: String?,
         // I'm not really sure what to do in this scenario. I think
         // I'm only going to use one database version.
         for (i in 1..1000)
-            android.util.Log.wtf("uh oh", "Wait, why did this happen")
+            android.util.Log.wtf("TaskDatabaseHandler", "Wait, why did this happen")
     }
 
 

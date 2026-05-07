@@ -27,7 +27,7 @@ class Task constructor(
     // This function will help me to see what an individual task is.
     // It's really just a convenience print.
     fun printMe(){
-        Log.i("task", "description: $description | dueDate: $dueDate")
+        Log.i("Task", "description: $description | dueDate: $dueDate")
     }
 
     // A simple function to tell when two tasks have the same data.

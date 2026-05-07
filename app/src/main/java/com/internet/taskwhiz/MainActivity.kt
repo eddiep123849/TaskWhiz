@@ -99,9 +99,9 @@ class MainActivity : AppCompatActivity() {
             deleteBuilder.show()
         }
 
-        Log.i("trouble", "size of referencelist: ${taskAdapter.listOfViewHolderReferences.size}")
+        Log.i("MainActivity", "size of referencelist: ${taskAdapter.listOfViewHolderReferences.size}")
         val useMe = recyclerView.adapter as TaskAdapter
-        Log.i("trouble", "size of referencelist: ${useMe.listOfViewHolderReferences.size}")
+        Log.i("MainActivity", "size of referencelist: ${useMe.listOfViewHolderReferences.size}")
     }
 
     // This is called when the the app is no longer in the foreground/is
@@ -152,7 +152,7 @@ class MainActivity : AppCompatActivity() {
     // This will set a longClickListener on each Task in the RecyclerView so that it can
     // be deleted by a longClick.
     private fun setLongClickDeletes() {
-        Log.i("longClick", "setLongClickDeletes() called")
+        Log.i("MainActivity", "setLongClickDeletes() called")
         val taskAdapter: TaskAdapter = recyclerView.adapter as TaskAdapter
         val listOfViewHolderReferences: LinkedList<TaskAdapter.MyViewHolder> = taskAdapter.listOfViewHolderReferences
 
@@ -165,13 +165,13 @@ class MainActivity : AppCompatActivity() {
             // If every time we change our TaskList data we make sure to update our recyclerView,
             // then we will successfully make sure that the recyclerView, dynamic and persistent
             // data are synchronized.
-            Log.i("longClick", "Setting up a listener.")
+            Log.i("MainActivity", "Setting up a listener.")
             val searchForThisTask = taskmodelhandler.getTask(i)
             searchForThisTask.printMe()
 
             viewHolder.view.setOnLongClickListener {
                 // Delete the task from the dynamic task list.
-                Log.i("longClick", "longClick listener code is running. i: $i")
+                Log.i("MainActivity", "longClick listener code is running. i: $i")
                 taskmodelhandler.deleteSpecifiedTask(searchForThisTask)
                 // Make sure the change is reflected
                 binding.recyclerView.adapter = TaskAdapter(taskmodelhandler.getTasks())
@@ -187,7 +187,10 @@ class MainActivity : AppCompatActivity() {
      * may have more success... wait, could I do
      */
     fun setOnLongClickDeletesRevised() {
-        val taskAdapter = recyclerView.adapter
+        val taskAdapter = recyclerView.adapter as TaskAdapter
+        for (thing in taskAdapter.listOfViewHolderReferences){
+
+        }
 
     }
 
