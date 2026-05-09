@@ -157,8 +157,6 @@ class MainActivity : AppCompatActivity() {
         val taskAdapter: TaskAdapter = recyclerView.adapter as TaskAdapter
         val listOfViewHolderReferences: LinkedList<TaskAdapter.MyViewHolder> = taskAdapter.listOfViewHolderReferences
 
-        // It's been a LONG time since I've done the below in Android.
-        var i = 0
         for (viewHolder in listOfViewHolderReferences){
             // To take a view out of the recyclerView with a longClick, we need to do two things:
             // 1: remove that task from the dynamic list of tasks to show the update.
@@ -199,7 +197,6 @@ class MainActivity : AppCompatActivity() {
                         Log.i("MainActivity", "We didn't find task:")
                         clickedTask.printMe()
                     }
-
                     // Don't pass this event to other listeners
                     true
                 }
