@@ -18,7 +18,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 // view binding imports
-import com.internet.taskwhiz.databinding.DialogLayoutBinding
+import com.internet.taskwhiz.databinding.AddDialogLayoutBinding
 import com.internet.taskwhiz.databinding.ActivityMainBinding
 import java.io.File
 import java.io.FileInputStream
@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
         // following the standard view binding pattern. I need to
         // access a view, but it's in a different layout file, so I
         // think this should allow me to be able to access it.
-        val dialogBinding = DialogLayoutBinding.inflate(layoutInflater)
+        val dialogBinding = AddDialogLayoutBinding.inflate(layoutInflater)
 
         // The below sets up the Add Task dialog to specify the description and due date
         // for a new task to be displayed. It has a title, icon, positive button
@@ -205,7 +205,8 @@ class MainActivity : AppCompatActivity() {
 
         val deleteBuilder: AlertDialog = AlertDialog.Builder(this)
             .setIcon(R.mipmap.eddie_icon)
-            .setTitle("Wassup Dawg?")
+            .setTitle("Do you want to delete the below task?")
+            //.setView()
             .setPositiveButton("Delete Last Task"){dialog, which -> deleteLastTask()}
             .setNegativeButton("Cancel"){dialog, which -> }
             .create()
