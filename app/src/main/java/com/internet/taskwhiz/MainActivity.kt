@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 // view binding imports
 import com.internet.taskwhiz.databinding.AddDialogLayoutBinding
 import com.internet.taskwhiz.databinding.ActivityMainBinding
+import com.internet.taskwhiz.databinding.DeleteDialogLayoutBinding
 import java.io.File
 import java.io.FileInputStream
 // file IO imports
@@ -130,6 +131,15 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = TaskAdapter(taskmodelhandler.getTasks())
     }
 
+    // Returns true if we found it and deleted it and false otherwise.
+    private fun deleteSpecificTask(task: Task) : Boolean {
+        val result = taskmodelhandler.deleteSpecifiedTask(task)
+        if (result){
+            recyclerView.adapter = TaskAdapter(taskmodelhandler.getTasks())
+        }
+        return result
+    }
+
     private fun deleteLastTask(){
         // If we're going to delete a task, we better be sure that it actually has
         // something we can remove.
@@ -180,13 +190,13 @@ class MainActivity : AppCompatActivity() {
                     val clickedTask = Task(description, dueDate)
                     // Now, we try to see if such a task is in our list. We SHOULD
                     // find such a task in our list
-                    if (taskmodelhandler.deleteSpecifiedTask(clickedTask)){
-                        Log.i("MainActivity", "We successfully found and deleted task:")
-                        clickedTask.printMe()
-                        Log.i("MainActivity", "")
-                        recyclerView.adapter = TaskAdapter(taskmodelhandler.getTasks())
+                    deleteTaskDialog(clickedTask)
+                    if (-1 < taskmodelhandler.hasTask(clickedTask)){
+                        // The task is in the list.
+                        deleteTaskDialog(clickedTask)
                     }
                     else {
+                        // The task is not in the list.
                         Log.i("MainActivity", "We didn't find task:")
                         clickedTask.printMe()
                     }
@@ -202,13 +212,29 @@ class MainActivity : AppCompatActivity() {
     // 2), display the option to delete said task in a dialog,
     // 3) and then actually delete the task if the user clicks yes.
     fun deleteTaskDialog(task: Task){
+        val deleteDialogLayout = DeleteDialogLayoutBinding.inflate(layoutInflater)
+        // Currently, the dialog_layout is a LinearLayout with
+        // 2 child views, so these can be hardcoded, but may need to
+        // be changed later if I change the layout file.
+        val linearLayout = deleteDialogLayout.root
+        val descriptionTextView = linearLayout.getChildAt(0) as TextView
+        val dueDateText = linearLayout.getChildAt(1) as TextView
+        descriptionTextView.text = task.description
+        dueDateText.text = task.dueDate
 
-        val deleteBuilder: AlertDialog = AlertDialog.Builder(this)
+        AlertDialog.Builder(this)
             .setIcon(R.mipmap.eddie_icon)
             .setTitle("Do you want to delete the below task?")
-            //.setView()
-            .setPositiveButton("Delete Last Task"){dialog, which -> deleteLastTask()}
+            .setView(deleteDialogLayout.root)
+            .setPositiveButton("Delete Task"){dialog, which ->
+                deleteSpecificTask(task)
+                Log.i("MainActivity", "We successfully found and deleted task:")
+                task.printMe()
+                Log.i("MainActivity", "")
+            }
             .setNegativeButton("Cancel"){dialog, which -> }
             .create()
+            .show()
+
     }
 }
