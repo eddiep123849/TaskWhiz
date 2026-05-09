@@ -58,7 +58,7 @@ class TaskAdapter(val listOfTasks: LinkedList<Task>): RecyclerView.Adapter<TaskA
         descriptionText.text = listOfTasks.get(position).description
         localDateText.text   = listOfTasks.get(position).dueDate
 
-        Log.i("TaskAdapter","onBindViewHolder holder: ${descriptionText.text}, ${localDateText.text}")
+        Log.i("TaskAdapter","position: $position; onBindViewHolder holder: ${descriptionText.text}, ${localDateText.text}")
 
     }
 
