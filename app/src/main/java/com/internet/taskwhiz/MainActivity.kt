@@ -143,13 +143,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // This will delete a specific task out of the linked list and will update the RecyclerView accordingly.
-    private fun deleteSpecificTask(index: Int): Boolean{
-        val boolAnswer: Boolean = taskmodelhandler.deleteTaskAt(index)
-        recyclerView.adapter = TaskAdapter(taskmodelhandler.getTasks())
-        return boolAnswer
-    }
-
     // This will set a longClickListener on each Task in the RecyclerView so that it can
     // be deleted by a longClick.
     private fun setLongClickDeletes() {
