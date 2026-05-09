@@ -90,6 +90,18 @@ class ViewModelHandler(private val context: Context,
         return false
     }
 
+    // This function takes a task and returns the first index
+    // of that task in the list or -1 if it's not in the list.
+    fun hasTask(task: Task): Int {
+        var i = 0
+        for (currentTask in viewModel.tasklist){
+            if (currentTask.equals(task))
+                return i
+            i++ // DON'T FORGET THIS!!! ALMOST DID!
+        }
+        return -1
+    }
+
     fun getSize() = viewModel.tasklist.size
 
 

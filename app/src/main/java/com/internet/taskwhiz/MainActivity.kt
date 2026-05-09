@@ -203,4 +203,18 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    // The below function will take a task as input and will
+    // 1) search for it with the taskmodelhandler,
+    // 2), display the option to delete said task in a dialog,
+    // 3) and then actually delete the task if the user clicks yes.
+    fun deleteTaskDialog(task: Task){
+
+        val deleteBuilder: AlertDialog = AlertDialog.Builder(this)
+            .setIcon(R.mipmap.eddie_icon)
+            .setTitle("Wassup Dawg?")
+            .setPositiveButton("Delete Last Task"){dialog, which -> deleteLastTask()}
+            .setNegativeButton("Cancel"){dialog, which -> }
+            .create()
+    }
 }
