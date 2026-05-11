@@ -106,14 +106,19 @@ class MainActivity : AppCompatActivity() {
         Log.i("onCreate", "size of referencelist: ${useMe.listOfViewHolderReferences.size}")
     }
 
-    // This is called when the the app is no longer in the foreground/is
-    // about to no longer be on the screen, I believe. This will make sure that
-    // the db is updated to hold the current tasks in the ViewModel.
-    override fun onSaveInstanceState(outState: Bundle){
-        super.onSaveInstanceState(outState)
+    /* When onDestroy is finally called for this activity, that's when the
+     * TaskListViewModel instance will actually be destroyed, which means that
+     * the dynamic data will be lost. So, when that happens, it's a good time to
+     * store the current state of the tasks to the database so that when we call
+     * onCreate again to see which tasks to put in the TaskListViewModel, we pull
+     * the saved tasks from the database. This should be slightly more efficient
+     * than the onSaveInstanceState implementation because this will use the
+     * database less but will still synchronize the dynamic data and persistent data.
+     */
+    override fun onDestroy(){
         taskmodelhandler.setDB()
+        super.onDestroy()
     }
-
 
     private fun addGenericTask(){
         // The below is my nifty way to add more tasks with unique descriptions.
