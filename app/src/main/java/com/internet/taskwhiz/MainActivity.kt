@@ -101,9 +101,9 @@ class MainActivity : AppCompatActivity() {
             deleteBuilder.show()
         }
 
-        Log.i("MainActivity", "size of referencelist: ${taskAdapter.listOfViewHolderReferences.size}")
+        Log.i("onCreate", "size of referencelist: ${taskAdapter.listOfViewHolderReferences.size}")
         val useMe = recyclerView.adapter as TaskAdapter
-        Log.i("MainActivity", "size of referencelist: ${useMe.listOfViewHolderReferences.size}")
+        Log.i("onCreate", "size of referencelist: ${useMe.listOfViewHolderReferences.size}")
     }
 
     // This is called when the the app is no longer in the foreground/is
@@ -156,7 +156,7 @@ class MainActivity : AppCompatActivity() {
     // This will set a longClickListener on each Task in the RecyclerView so that it can
     // be deleted by a longClick.
     private fun setLongClickDeletes() {
-        Log.i("MainActivity", "setLongClickDeletes() called")
+        Log.i("setLongClickDeletes", "setLongClickDeletes() called")
         val taskAdapter: TaskAdapter = recyclerView.adapter as TaskAdapter
         val listOfViewHolderReferences: LinkedList<TaskAdapter.MyViewHolder> = taskAdapter.listOfViewHolderReferences
 
@@ -197,7 +197,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     else {
                         // The task is not in the list.
-                        Log.i("MainActivity", "We didn't find task:")
+                        Log.i("setLongClickDeletes", "We didn't find task:")
                         clickedTask.printMe()
                     }
                     // Don't pass this event to other listeners
@@ -228,13 +228,19 @@ class MainActivity : AppCompatActivity() {
             .setView(deleteDialogLayout.root)
             .setPositiveButton("Delete Task"){dialog, which ->
                 deleteSpecificTask(task)
-                Log.i("MainActivity", "We successfully found and deleted task:")
+                Log.i("deleteTaskDialog", "We successfully found and deleted task:")
                 task.printMe()
-                Log.i("MainActivity", "")
+                Log.i("deleteTaskDialog", "")
+                dialog.dismiss()
+                Log.i("deleteTaskDialog", "We dismissed the dialog!")
             }
-            .setNegativeButton("Cancel"){dialog, which -> }
+            .setNegativeButton("Cancel"){dialog, which ->
+                dialog.dismiss()
+                Log.i("deleteTaskDialog", "We dismissed the dialog!")
+            }
             .create()
             .show()
+
 
     }
 }
