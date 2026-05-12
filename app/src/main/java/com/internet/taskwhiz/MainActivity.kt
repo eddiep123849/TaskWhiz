@@ -34,9 +34,6 @@ import java.util.LinkedList
 class MainActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
-    // This will observe the list of references in recyclerView to see when the list
-    // of references gets updated if onCreateViewHolder gets called again.
-    private lateinit var recyclerViewObserver: Observer<MutableLiveData<LinkedList<TaskAdapter.MyViewHolder>>>
     private lateinit var binding: ActivityMainBinding
     // The below is my way of handling my ViewModel. I originally came up with it to solve my
     // context problem I was having with my ViewModel implementation.
