@@ -14,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -32,6 +34,9 @@ import java.util.LinkedList
 class MainActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
+    // This will observe the list of references in recyclerView to see when the list
+    // of references gets updated if onCreateViewHolder gets called again.
+    private lateinit var recyclerViewObserver: Observer<MutableLiveData<LinkedList<TaskAdapter.MyViewHolder>>>
     private lateinit var binding: ActivityMainBinding
     // The below is my way of handling my ViewModel. I originally came up with it to solve my
     // context problem I was having with my ViewModel implementation.

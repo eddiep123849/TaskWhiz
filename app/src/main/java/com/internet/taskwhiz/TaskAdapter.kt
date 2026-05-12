@@ -6,7 +6,7 @@ package com.internet.taskwhiz
  * be displayed is handled by this class.
  */
 
-import android.graphics.Color
+import androidx.lifecycle.MutableLiveData
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -18,32 +18,44 @@ import androidx.recyclerview.widget.RecyclerView
 import java.util.LinkedList
 
 class TaskAdapter(val listOfTasks: LinkedList<Task>): RecyclerView.Adapter<TaskAdapter.MyViewHolder>() {
-    // I'm having a problem with setting on click listeners to the cardView objects here,
-    // so I decided to add this in to be able to reference them after they're created. I don't
-    // know what happens after they're created and then passed to the RecyclerView, and I also
-    // don't know how to access these objects after their creation here, which is why I added
-    // the below list. It's an Eddie-fix, but shoot, if it works, it works!
-    val listOfViewHolderReferences: LinkedList<MyViewHolder> = LinkedList<MyViewHolder>()
+    /* I'd like to maintain a list of references to the ViewHolder objects so I
+     * can reference them later on in MainActivity when I set up the LongClick
+     * deletes with the correct dialog description. However, this list can change,
+     * so I'd like to be able to "observe" it to react to its changes, so I'm going
+     * to put the list of references in a LiveData wrapper!
+     */
+    val listOfViewHolderReferences: MutableLiveData<LinkedList<MyViewHolder>> =
+        MutableLiveData<LinkedList<MyViewHolder>>()
+
+    init {
+        // We need to make sure we initialize the LinkedList within the LiveData wrapper!
+        // Because of this, we should be able to use the !!. assert non-null operator because
+        // with this init block, the value of the LiveData wrapper should NEVER BE NULL!!
+        listOfViewHolderReferences.value = LinkedList<MyViewHolder>()
+    }
 
     // Make a MyViewHolder instance. Also, I believe the parent parameter is the RecyclerView into which
     // we'll be putting our ViewHolders! That's what that parameter is, I'm pretty sure!
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskAdapter.MyViewHolder {
         Log.i("TaskAdapter", "onCreateViewHolder called")
-
-        listOfViewHolderReferences.addLast(
+        // I've decided to use below the not-so-safe assert not null operator below
+        // BECAUSE, in this instance, the LiveData object should ALWAYS have an ACTUAL
+        // OBJECT as its value because of the initialization block, so if it IS null,
+        // then I did something wrong.
+        listOfViewHolderReferences.value!!.addLast(
             MyViewHolder(
                 // I have a sample layout of what a task should look like.
             LayoutInflater.from(parent.context).inflate(R.layout.task_card, parent, false)
             )
         )
-        Log.i("TaskAdapter", "size: ${listOfViewHolderReferences.size}")
+        Log.i("TaskAdapter", "size: ${listOfViewHolderReferences.value!!.size}")
         // Return the reference to the last ViewHolder in the list.
-        return listOfViewHolderReferences.last()
+        return listOfViewHolderReferences.value!!.last()
     }
 
     // Set the properties of a MyViewHolder instance.
     override fun onBindViewHolder(holder: TaskAdapter.MyViewHolder, position: Int) {
-        val cardView: CardView = holder.view as CardView
+        val cardView: CardView = holder.itemView as CardView
         // Because I specifically created a layout file to use, I can be confident
         // that the second and third children will always be the same. The CardView has
         // a linear layout, and the linear layout will always have three TextViews inside:
@@ -69,14 +81,11 @@ class TaskAdapter(val listOfTasks: LinkedList<Task>): RecyclerView.Adapter<TaskA
         return listOfTasks.size;
     }
 
-
-    public class MyViewHolder: RecyclerView.ViewHolder {
-        // Yeah, my viewholder class holds a single view. That's what it does.
-        // New addition, it's possible that the superclass already holds a variable for the view,
-        // so it may be that me adding in a View instance variable is unnecessary.
-        val view: View
-        constructor(layoutView: View): super(layoutView){
-            view = layoutView
+    public class MyViewHolder(layoutView: View): RecyclerView.ViewHolder(layoutView) {
+        // The super class already holds a view, so I don't need to declare any more instance variables
+        // to be able to access the view in the constructor.
+        init {
+            Log.i("TaskAdapter", "MyViewHolder object created")
         }
     }
 }
