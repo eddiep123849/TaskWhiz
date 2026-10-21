@@ -1,6 +1,7 @@
 package com.internet.taskwhiz
 
 import android.content.Context
+import android.util.Log
 import java.util.LinkedList
 
 /* The purpose of this class is to clear up this whole context problem I've been having with
@@ -42,6 +43,7 @@ class ViewModelHandler(private val context: Context,
     fun setDB() {
         val db = TaskDatabaseHandler(context, null, null, TaskDatabaseHandler.DATABASE_VERSION)
         db.setDB(viewModel.tasklist)
+        Log.i("ViewModelHandler", "The database should be updated!")
         // Again, why should I even do the below?
         db.close()
     }
