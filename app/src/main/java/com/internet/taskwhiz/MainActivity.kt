@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
             ViewModelProvider(this)[com.internet.taskwhiz.TaskListViewModel::class.java]
         )
 
-        val taskAdapter = TaskAdapter(taskmodelhandler.getTasks())
+        val taskAdapter = TaskAdapter(taskmodelhandler.getTasks(), this)
 
         recyclerView = binding.recyclerView
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -84,7 +84,6 @@ class MainActivity : AppCompatActivity() {
                 )
             ) }
             .setNegativeButton("Cancel"){_, _ -> }
-            .setNeutralButton("Setup Click Deletes! (Experimental)"){_,_ -> setLongClickDeletes()}
             .create()
 
         binding.addTask.setOnClickListener{
@@ -116,10 +115,18 @@ class MainActivity : AppCompatActivity() {
      * the saved tasks from the database. This should be slightly more efficient
      * than the onSaveInstanceState implementation because this will use the
      * database less but will still synchronize the dynamic data and persistent data.
+     *
+     * Update: if the app is zoomed out of and closed by swiping up, then the below never
+     * happens! I realized this after numerous Log.i debugging print statements and after
+     * seeing that some added tasks weren't saved when the app was closed, so I think
+     * switching it back to the onSaveInstance() state function will work better, because
+     * that will always happen. I guess the app goes straight to onClear or something, but If you close out of the app, it should be called,
      */
-    override fun onDestroy(){
+
+    override fun onSaveInstanceState(outState: Bundle){
         taskmodelhandler.setDB()
-        super.onDestroy()
+        Log.i("onSaveInstanceState", "Okay, so we made it to saveInstanceState()")
+        super.onSaveInstanceState(outState)
     }
 
     private fun addGenericTask(){
@@ -128,21 +135,21 @@ class MainActivity : AppCompatActivity() {
         // If I reassign the adapter, then the recycler view readjusts what it displays.
         // Is there a better way to update the RecyclerView? Probably, but this is
         // how I have figured out how to do this.
-        recyclerView.adapter = TaskAdapter(taskmodelhandler.getTasks())
+        recyclerView.adapter = TaskAdapter(taskmodelhandler.getTasks(), this)
     }
 
     // The below will add a specific task to the linked list and will update the RecyclerView accordingly.
     private fun addSpecificTask(task: Task) {
         taskmodelhandler.addTask(task)
         // When you update the adapter, the recyclerView updates what it displays.
-        recyclerView.adapter = TaskAdapter(taskmodelhandler.getTasks())
+        recyclerView.adapter = TaskAdapter(taskmodelhandler.getTasks(), this)
     }
 
     // Returns true if we found it and deleted it and false otherwise.
     private fun deleteSpecificTask(task: Task) : Boolean {
         val result = taskmodelhandler.deleteSpecifiedTask(task)
         if (result){
-            recyclerView.adapter = TaskAdapter(taskmodelhandler.getTasks())
+            recyclerView.adapter = TaskAdapter(taskmodelhandler.getTasks(), this)
         }
         return result
     }
@@ -156,13 +163,17 @@ class MainActivity : AppCompatActivity() {
         }
         else {
             this.taskmodelhandler.deleteLastTask()
-            recyclerView.adapter = TaskAdapter(taskmodelhandler.getTasks())
+            recyclerView.adapter = TaskAdapter(taskmodelhandler.getTasks(), this)
         }
     }
 
     // This will set a longClickListener on each Task in the RecyclerView so that it can
-    // be deleted by a longClick.
-    private fun setLongClickDeletes() {
+    // be deleted by a longClick. This will be called by the RecylcerView when it makes
+    // a new task/ViewHolder, so we should always be able to longClick on any task and
+    // be able to delete it. This also removes the need to have a button to specifically
+    // call this, so synchronization is now no longer needed by an explicit button press!
+    // Yay! It's automatically synchronized!
+    public fun setLongClickDeletes() {
         Log.i("setLongClickDeletes", "setLongClickDeletes() called")
         val taskAdapter: TaskAdapter = recyclerView.adapter as TaskAdapter
         val listOfViewHolderReferences: LinkedList<TaskAdapter.MyViewHolder> = taskAdapter.listOfViewHolderReferences
@@ -174,7 +185,7 @@ class MainActivity : AppCompatActivity() {
             // If every time we change our TaskList data we make sure to update our recyclerView,
             // then we will successfully make sure that the recyclerView, dynamic and persistent
             // data are synchronized.
-            val cardView = viewHolder.view as CardView
+            val cardView = viewHolder.itemView as CardView
             cardView.let{
                 // One of my CardViews in the adapter holds a LinearLayout,
                 // which holds 3 TextViews.
